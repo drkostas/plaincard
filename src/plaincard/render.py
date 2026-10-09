@@ -134,7 +134,7 @@ def svg(spec: Spec) -> str:
         if spec.footer:
             text(72, 604, spec.footer, 20, style.FAINT, style.MONO)
         box = (120, top, W - 240, bottom - top)
-        scale_cap = 1.0
+        scale_cap = 1.3     # a small drawing grows to fill its space, a big one shrinks
     elif spec.kind == "banner":
         size = _title_size(spec.name, 56, 40, 760)
         out.append(f'<rect x="64" y="96" width="48" height="6" rx="3" fill="{spec.accent}"/>')
@@ -145,7 +145,7 @@ def svg(spec: Spec) -> str:
         for i, ln in enumerate(lines):
             text(64, 232 + i * 32, ln, 24, style.MUTED, style.SANS)
         box = (900, 50, 636, 300)
-        scale_cap = 1.0
+        scale_cap = 1.3
     elif spec.kind == "diagram":
         bottom = H - 40
         if spec.caption:
