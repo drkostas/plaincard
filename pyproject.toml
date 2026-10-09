@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "plaincard"
+version = "0.1.0"
+description = "Plain, consistent images for projects (cards, README banners, diagrams, icons) from a few lines of spec"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Konstantinos Georgiou" }]
+dependencies = ["pyyaml>=6"]
+keywords = ["svg", "social-card", "og-image", "diagram", "readme", "claude", "claude-code"]
+classifiers = ["Programming Language :: Python :: 3", "Topic :: Multimedia :: Graphics", "Topic :: Documentation"]
+
+[project.urls]
+Homepage = "https://github.com/drkostas/plaincard"
+
+[project.scripts]
+plaincard = "plaincard.cli:main"
+plaincard-mcp = "plaincard.mcp_server:main"
+
+[project.optional-dependencies]
+mcp = ["mcp>=1.2,<2"]
+test = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+plaincard = ["skills/*/SKILL.md"]

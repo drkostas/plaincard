@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+<rect width="1280" height="640" fill="#0f1419"/>
+<rect x="72" y="72" width="56" height="6" rx="3" fill="#7aa2f7"/>
+<text x="72" y="160" font-family="'SF Mono','Menlo','JetBrains Mono','DejaVu Sans Mono',monospace" font-size="64" font-weight="600" fill="#e6edf3">claude-human</text>
+<text x="72" y="214" font-family="-apple-system,'Inter','Helvetica Neue','Segoe UI',Arial,sans-serif" font-size="27" fill="#8b98a5">Screen capture, lock-screen typing and phone notifications</text>
+<text x="72" y="250" font-family="-apple-system,'Inter','Helvetica Neue','Segoe UI',Arial,sans-serif" font-size="27" fill="#8b98a5">for a Mac a person and an agent share.</text>
+<text x="72" y="604" font-family="'SF Mono','Menlo','JetBrains Mono','DejaVu Sans Mono',monospace" font-size="20" fill="#56636f">github.com/drkostas/claude-human</text>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round" transform="translate(312.0 305.0) scale(1.000)"><g transform="translate(0.0 9.0)"><rect x="30" y="0" width="300" height="200" rx="12" stroke="#2b3743" stroke-width="3"/><line x1="0" y1="230" x2="360" y2="230" stroke="#2b3743" stroke-width="3"/><g transform="translate(150.0 66.0)"><rect x="0" y="18" width="60" height="50" rx="6" stroke="#7aa2f7" stroke-width="3"/><path d="M12 18 v-14 a18 18 0 0 1 36 0 v14" stroke="#7aa2f7" stroke-width="3"/></g></g><line x1="396.0" y1="125.0" x2="526.0" y2="125.0" stroke="#7aa2f7" stroke-width="3" stroke-dasharray="2 10"/><g transform="translate(526.0 0.0)"><rect x="0" y="0" width="130" height="250" rx="22" stroke="#2b3743" stroke-width="3"/><line x1="45" y1="18" x2="85" y2="18" stroke="#2b3743" stroke-width="3"/><g transform="translate(35.0 102.0)"><path d="M4 24 l16 16 l36 -36" stroke="#7aa2f7" stroke-width="4"/></g></g></g>
+</svg>

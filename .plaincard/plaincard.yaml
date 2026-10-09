@@ -1,0 +1,8 @@
+kind: banner
+name: plaincard
+line: "Plain, consistent images for projects, from a few lines of spec."
+accent: teal
+diagram:
+  - doc: {label: spec}
+  - arrow: render
+  - pane: {accent: true, label: image}

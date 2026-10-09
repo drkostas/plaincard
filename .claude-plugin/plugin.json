@@ -1,0 +1,12 @@
+{
+  "name": "plaincard",
+  "version": "0.1.0",
+  "description": "Plain, consistent images for projects (cards, README banners, diagrams, icons) from a few lines of spec",
+  "author": { "name": "Konstantinos Georgiou" },
+  "homepage": "https://github.com/drkostas/plaincard",
+  "license": "MIT",
+  "skills": ["./src/plaincard/skills/"],
+  "mcpServers": {
+    "plaincard": { "command": "plaincard-mcp" }
+  }
+}
