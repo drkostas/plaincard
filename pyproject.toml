@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "plaincard"
-version = "0.1.0"
+version = "0.2.0"
 description = "Plain, consistent images for projects (cards, README banners, diagrams, icons) from a few lines of spec"
 readme = "README.md"
 requires-python = ">=3.11"
