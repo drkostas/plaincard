@@ -68,7 +68,8 @@ render_spec({"kind": "icon", "diagram": ["db"]}, "images", "db")
 
 pane, panes (a grid with one highlighted), terminal, phone (`model: ios` or `android`, or
 `shows: lock` or `check`), laptop, tv (app tiles, one crossed out, one highlighted), remote, cloud,
-db, gate, server, doc, folder, lock, check, user, globe, and box (a labelled box for anything else).
+db, gate, server, doc, folder, lock, check, user, globe, chart, heart, note (music), watch, cube, and box
+(a labelled box for anything else).
 Each part is quiet unless the spec marks it `accent: true`. A gate, lock, check and remote are lit by
 default. Any part can take a `label`.
 

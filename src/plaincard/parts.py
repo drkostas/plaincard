@@ -235,6 +235,49 @@ def box(ink: Ink, accent: bool = False, text: str = "") -> Drawn:
     return Drawn(w, 64, out)
 
 
+def chart(ink: Ink, accent: bool = True) -> Drawn:
+    """A line chart on two axes: a model, a trend, a target over time."""
+    c = ink.accent if accent else ink.line
+    out = _path("M8 6 v118 h176", ink.line, style.STROKE)
+    out += _path("M20 100 C 50 96, 60 40, 92 52 S 140 84, 176 26", c, style.STROKE_ACCENT)
+    out += f'<circle cx="176" cy="26" r="5" stroke="{c}" stroke-width="3"/>'
+    return Drawn(190, 128, out)
+
+
+def heart(ink: Ink, accent: bool = False) -> Drawn:
+    """A heart: heart rate, health."""
+    c, sw = ink.outline(accent)
+    return Drawn(92, 82, _path("M46 78 C 10 54, 0 36, 4 22 a22 22 0 0 1 42 -6 a22 22 0 0 1 42 6 "
+                               "C 92 36, 82 54, 46 78 z", c, sw))
+
+
+def note(ink: Ink, accent: bool = False) -> Drawn:
+    """A music note: a song, a playlist, a tempo."""
+    c, sw = ink.outline(accent)
+    out = f'<ellipse cx="22" cy="92" rx="20" ry="14" stroke="{c}" stroke-width="{sw}"/>'
+    out += f'<ellipse cx="82" cy="80" rx="20" ry="14" stroke="{c}" stroke-width="{sw}"/>'
+    out += _path("M42 92 V 14 L 102 4 V 80", c, sw) + _path("M42 30 L 102 20", c, sw)
+    return Drawn(106, 108, out)
+
+
+def watch(ink: Ink, accent: bool = False) -> Drawn:
+    """A smartwatch: a fitness device, a wearable's data."""
+    c, sw = ink.outline(accent)
+    out = _rect(16, 0, 60, 26, ink.line, style.STROKE_THIN, rx=6)
+    out += _rect(16, 114, 60, 26, ink.line, style.STROKE_THIN, rx=6)
+    out += _rect(0, 22, 92, 96, c, sw, rx=24)
+    out += _path("M22 72 h12 l8 -16 l10 30 l8 -14 h12", ink.accent if accent else ink.detail, 3)
+    return Drawn(92, 140, out)
+
+
+def cube(ink: Ink, accent: bool = False) -> Drawn:
+    """A 3D object: a model, a printed part."""
+    c, sw = ink.outline(accent)
+    out = _path("M60 4 L 112 32 V 92 L 60 120 L 8 92 V 32 Z", c, sw)
+    out += _path("M8 32 L 60 60 L 112 32 M60 60 V 120", c, style.STROKE_THIN)
+    return Drawn(120, 124, out)
+
+
 #: what a laptop screen can show
 SCREEN: dict[str, Callable[[Ink, bool], Drawn]] = {
     "lock": lambda ink, a: lock(ink, True),
@@ -246,7 +289,7 @@ PARTS: dict[str, Callable[..., Drawn]] = {
     "pane": pane, "panes": panes, "terminal": terminal, "phone": phone, "laptop": laptop,
     "tv": tv, "remote": remote, "cloud": cloud, "db": db, "gate": gate, "server": server,
     "doc": doc, "folder": folder, "lock": lock, "check": check, "user": user, "globe": globe,
-    "box": box,
+    "box": box, "chart": chart, "heart": heart, "note": note, "watch": watch, "cube": cube,
 }
 
 #: what joins two parts in a row

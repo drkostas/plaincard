@@ -9,7 +9,7 @@ from pathlib import Path
 
 from plaincard import export, render, spec
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 
 def render_spec(data: dict, out_dir: str | Path, stem: str, png: bool = True) -> list[Path]:
