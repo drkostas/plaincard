@@ -89,3 +89,81 @@ def test_png_is_twice_the_canvas(tmp_path):
     assert data[:8] == b"\x89PNG\r\n\x1a\n"
     w, h = int.from_bytes(data[16:20], "big"), int.from_bytes(data[20:24], "big")
     assert (w, h) == (1024, 1024)
+
+
+STUB = '''#!{python}
+import json, struct, sys, time, zlib
+from pathlib import Path
+
+calls = Path({calls!r})
+plan = {plan!r}
+n = len(calls.read_text().splitlines()) if calls.exists() else 0
+with calls.open("a") as f:
+    f.write(json.dumps(sys.argv[1:]) + "\\n")
+step = plan[min(n, len(plan) - 1)]
+shot = next(a.split("=", 1)[1] for a in sys.argv if a.startswith("--screenshot="))
+
+def chunk(kind, data):
+    return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data))
+
+if step == "hang":
+    print("stalled before drawing", file=sys.stderr, flush=True)
+    time.sleep(60)
+elif step == "exit":
+    print("could not start", file=sys.stderr, flush=True)
+    sys.exit(3)
+else:
+    ihdr = struct.pack(">IIBBBBB", 1, 1, 8, 0, 0, 0, 0)
+    Path(shot).write_bytes(b"\\x89PNG\\r\\n\\x1a\\n" + chunk(b"IHDR", ihdr)
+                           + chunk(b"IDAT", zlib.compress(b"\\x00\\x00")) + chunk(b"IEND", b""))
+    if step == "write-and-stay":
+        time.sleep(60)
+'''
+
+
+def stub_browser(tmp_path, monkeypatch, plan):
+    """A stand-in browser that takes the next step of `plan` on each launch and logs its args."""
+    import json
+    import sys
+    calls = tmp_path / "calls.jsonl"
+    stub = tmp_path / "browser"
+    stub.write_text(STUB.format(python=sys.executable, calls=str(calls), plan=plan))
+    stub.chmod(0o755)
+    monkeypatch.setenv("PLAINCARD_CHROME", str(stub))
+    svg = tmp_path / "card.svg"
+    svg.write_text('<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"></svg>')
+
+    def launches():
+        return [json.loads(line) for line in calls.read_text().splitlines()]
+    return svg, launches
+
+
+def profile_of(args):
+    return next(a.split("=", 1)[1] for a in args if a.startswith("--user-data-dir="))
+
+
+def test_png_launches_again_with_a_fresh_profile_after_a_launch_that_stalls(tmp_path, monkeypatch):
+    svg, launches = stub_browser(tmp_path, monkeypatch, ["hang", "write"])
+    out = export.png(svg, tmp_path / "card.png", timeout=1)
+    assert out.read_bytes()[:8] == b"\x89PNG\r\n\x1a\n"
+    first, second = launches()
+    assert profile_of(first) != profile_of(second)
+    assert not Path(profile_of(first)).exists() and not Path(profile_of(second)).exists()
+
+
+def test_png_says_what_each_launch_did_when_none_writes(tmp_path, monkeypatch):
+    svg, launches = stub_browser(tmp_path, monkeypatch, ["exit", "hang"])
+    with pytest.raises(RuntimeError) as err:
+        export.png(svg, tmp_path / "card.png", timeout=1)
+    msg = str(err.value)
+    assert "launch 1: it exited with code 3 and wrote no PNG" in msg and "could not start" in msg
+    assert "launch 2: it was still running after 1s" in msg and "stalled before drawing" in msg
+    assert len(launches()) == 2 and not (tmp_path / "card.png").exists()
+
+
+def test_png_stops_a_browser_that_writes_and_does_not_exit(tmp_path, monkeypatch):
+    import time
+    svg, launches = stub_browser(tmp_path, monkeypatch, ["write-and-stay"])
+    start = time.monotonic()
+    out = export.png(svg, tmp_path / "card.png", timeout=20)
+    assert out.exists() and time.monotonic() - start < 10 and len(launches()) == 1
